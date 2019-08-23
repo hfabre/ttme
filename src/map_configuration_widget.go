@@ -26,7 +26,7 @@ func (mcw *mapConfigurationWidget) draw() {
 	raygui.Label(rl.Rectangle{float32(mcw.offsetX), float32(mcw.offsetY + 30), 30, 10}, "Map Height (unit is a tile): ")
 	mcw.heightInput = raygui.TextBox(rl.Rectangle{float32(mcw.offsetX + 160), float32(mcw.offsetY + 25), 20, 15}, mcw.heightInput)
 
-	if raygui.Button(rl.Rectangle{float32(mcw.offsetX + 200), float32(mcw.offsetY + 50), 20, 15}, "Update") {
+	if raygui.Button(rl.Rectangle{float32(mcw.offsetX + 200), float32(mcw.offsetY + 50), 60, 15}, "Update") {
 		mcw.update()
 	}
 }

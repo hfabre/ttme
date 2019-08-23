@@ -17,7 +17,7 @@ type jsonExport struct {
 }
 
 func (ew exportWidget) draw(mcw mapConfigurationWidget, board board) {
-	if raygui.Button(rl.Rectangle{float32(ew.offsetX), float32(ew.offsetY), 20, 15}, "Export as json") {
+	if raygui.Button(rl.Rectangle{float32(ew.offsetX), float32(ew.offsetY), 90, 15}, "Export as json") {
 		ew.exportJSON("./assets/map.json", mcw, board)
 	}
 }
