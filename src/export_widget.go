@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"github.com/gen2brain/raylib-go/raygui"
 	rl "github.com/gen2brain/raylib-go/raylib"
+	"github.com/sqweek/dialog"
 	"io/ioutil"
 )
 
@@ -17,8 +18,9 @@ type jsonExport struct {
 }
 
 func (ew exportWidget) draw(mcw mapConfigurationWidget, board board) {
-	if raygui.Button(rl.Rectangle{float32(ew.offsetX), float32(ew.offsetY), 90, 15}, "Export as json") {
-		ew.exportJSON("./assets/map.json", mcw, board)
+	if raygui.Button(rl.Rectangle{float32(ew.offsetX), float32(ew.offsetY), 90, 15}, "Export to JSON") {
+		path, _ := dialog.File().Filter("JSON files", "json").Title("Export to JSON").Save()
+		ew.exportJSON(path, mcw, board)
 	}
 }
 
