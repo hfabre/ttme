@@ -1,7 +1,9 @@
 package main
 
 import (
+	"github.com/gen2brain/raylib-go/raygui"
 	"github.com/gen2brain/raylib-go/raylib"
+	"github.com/sqweek/dialog"
 )
 
 // Tile size
@@ -14,19 +16,28 @@ const BoardOffsetY = 10
 
 
 func main() {
-	rl.InitWindow(800, 450, "Mapper")
+	rl.InitWindow(800, 600, "Mapper")
 	rl.SetTargetFPS(60)
 
 	tileset := makeTileset("./assets/tilesetpkm.png")
 	mcw := makeMapConfigurationWidget(10, 10)
 	b := emptyBoard(mcw.width, mcw.height, BoardOffsetX, BoardOffsetY)
-	ts := tileSelector{tileset, 10, 50, tile{0}}
+	ts := tileSelector{tileset, 10, 70, tile{0}}
 	ew := exportWidget{200, 80}
 	mousePressed := false
 
 	for !rl.WindowShouldClose() {
 
 		// Updating
+
+		// Find a tileset
+		// TODO: Write a widget and make sure user can specify tiles attributes (height and width)
+
+		if raygui.Button(rl.Rectangle{float32(ts.offsetX), float32(ts.offsetY) - 20, 80, 15}, "Select tileset") {
+			tilesetPath, _ := dialog.File().Load()
+			tileset = makeTileset(tilesetPath)
+			ts = tileSelector{tileset, 10, 70, tile{0}}
+		}
 
 		// Check map size changes
 
