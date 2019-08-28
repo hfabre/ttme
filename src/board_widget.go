@@ -5,13 +5,13 @@ import (
 	rl "github.com/gen2brain/raylib-go/raylib"
 )
 
-type board struct {
+type boardWidget struct {
 	width, height int
 	offsetX, offsetY int
 	tiles [][]tile
 }
 
-func (b *board) initTiles() {
+func (b *boardWidget) initTiles() {
 	b.tiles = make([][]tile, b.height)
 	for y := 0; y < b.height; y++ {
 		b.tiles[y] = make([]tile, b.width)
@@ -21,7 +21,7 @@ func (b *board) initTiles() {
 	}
 }
 
-func (b board) show() {
+func (b boardWidget) show() {
 	for y := 0; y < b.height; y++ {
 		for x := 0; x < b.width; x++ {
 			fmt.Printf("%d", b.tiles[y][x].index)
@@ -31,7 +31,7 @@ func (b board) show() {
 	}
 }
 
-func (b board) draw(tileset tileset) {
+func (b boardWidget) draw(tileset tileset) {
 	for y := 0; y < b.height; y++ {
 		for x := 0; x < b.width; x++ {
 			b.tiles[y][x].draw(b.offsetX + x * TileWidth, b.offsetY + y * TileHeight, tileset)
@@ -42,7 +42,7 @@ func (b board) draw(tileset tileset) {
 }
 
 // FIXME: This only draw the top and left lines
-func (b board) drawGrid() {
+func (b boardWidget) drawGrid() {
 	for x := 0; x < b.width; x++ {
 		rl.DrawLine(int32(b.offsetX + x * TileWidth), int32(b.offsetY), int32(b.offsetX + x * TileWidth), int32(b.offsetY + b.height * TileHeight), rl.Red)
 	}
@@ -52,25 +52,25 @@ func (b board) drawGrid() {
 	}
 }
 
-func (b board) contains(x, y float32) bool {
+func (b boardWidget) contains(x, y float32) bool {
 	point := rl.Vector2{x, y}
 	rect := rl.Rectangle{float32(b.offsetX), float32(b.offsetY), float32(b.width * TileWidth), float32(b.height * TileHeight)}
 
 	return rl.CheckCollisionPointRec(point, rect)
 }
 
-func (b *board) setTile(x, y int, tile tile) {
+func (b *boardWidget) setTile(x, y int, tile tile) {
 	b.tiles[y][x] = tile
 }
 
-func (b *board) setTileFromPos(x, y float32, tile tile) {
+func (b *boardWidget) setTileFromPos(x, y float32, tile tile) {
 	tileX := (x - float32(b.offsetX)) / TileWidth
 	tileY := (y - float32(b.offsetY)) / TileHeight
 
 	b.setTile(int(tileX), int(tileY), tile)
 }
 
-func (b *board) clear() {
+func (b *boardWidget) clear() {
 	for y := 0; y < b.height; y++ {
 		for x := 0; x < b.width; x++ {
 			b.tiles[y][x] = tile{0}
@@ -78,7 +78,7 @@ func (b *board) clear() {
 	}
 }
 
-func (b board) copy(newBoard *board) {
+func (b boardWidget) copy(newBoard *boardWidget) {
 	for y := 0; y < b.height; y++ {
 		if len(newBoard.tiles) > y {
 			for x := 0; x < b.width; x++ {
@@ -90,8 +90,8 @@ func (b board) copy(newBoard *board) {
 	}
 }
 
-func emptyBoard(width, height, offsetX, offsetY int) *board {
-	b := &board{width: width, height: height, offsetX: offsetX, offsetY: offsetY}
+func emptyBoard(width, height, offsetX, offsetY int) *boardWidget {
+	b := &boardWidget{width: width, height: height, offsetX: offsetX, offsetY: offsetY}
 	b.initTiles()
 	return b
 }
