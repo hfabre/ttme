@@ -13,7 +13,7 @@ func main() {
 	rl.InitWindow(800, 600, "TTME")
 	rl.SetTargetFPS(60)
 
-	currentScreen := makeMapCreationScreen()
+	currentScreen := makeNewMapScreen()
 
 	for !rl.WindowShouldClose() {
 
