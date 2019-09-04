@@ -11,6 +11,7 @@ const BoardOffsetX = 300
 const BoardOffsetY = 10
 
 type mapCreationScreen struct {
+	mc *mapConfiguration
 	tileset tileset
 	mcw mapConfigurationWidget
 	bw boardWidget
@@ -19,14 +20,19 @@ type mapCreationScreen struct {
 	mousePressed bool
 }
 
-func makeMapCreationScreen() mapCreationScreen {
-	tileset := makeTileset("./assets/tilesetpkm.png")
+func makeMapCreationScreen(mc *mapConfiguration) mapCreationScreen {
+	tileset := makeTileset(mc, "./assets/tilesetpkm.png")
 	mcw := makeMapConfigurationWidget(10, 10)
-	bw := emptyBoard(mcw.width, mcw.height, BoardOffsetX, BoardOffsetY)
-	tsw := tileSelectorWidget{tileset, 10, 70, tile{0}}
+
+	tsw := tileSelectorWidget{mc, tileset, 10, 70, tile{0}}
 	ew := exportWidget{200, 80}
 
-	return mapCreationScreen{tileset, mcw, *bw, tsw, ew, false}
+	return mapCreationScreen{mc: mc, tileset: tileset, mcw: mcw, tsw: tsw, ew: ew, mousePressed: false}
+}
+
+func (mcs *mapCreationScreen) load() {
+	bw := emptyBoard(mcs.mc, BoardOffsetX, BoardOffsetY)
+	mcs.bw = *bw
 }
 
 func (mcs mapCreationScreen) unload() {
@@ -41,16 +47,21 @@ func (mcs *mapCreationScreen) tick() {
 
 	if raygui.Button(rl.Rectangle{float32(mcs.tsw.offsetX), float32(mcs.tsw.offsetY) - 20, 80, 15}, "Select tileset") {
 		tilesetPath, _ := dialog.File().Load()
-		mcs.tileset = makeTileset(tilesetPath)
-		mcs.tsw = tileSelectorWidget{mcs.tileset, 10, 70, tile{0}}
+		mcs.tileset = makeTileset(mcs.mc, tilesetPath)
+		mcs.tsw = tileSelectorWidget{mcs.mc, mcs.tileset, 10, 70, tile{0}}
 	}
 
 	// Check map size changes
 
 	if mcs.mcw.hasChanges {
-		newBoard := emptyBoard(mcs.mcw.width, mcs.mcw.height, BoardOffsetX, BoardOffsetY)
+		mcs.mc.width = mcs.mcw.width
+		mcs.mc.height = mcs.mcw.height
+
+		newBoard := emptyBoard(mcs.mc, BoardOffsetX, BoardOffsetY)
 		mcs.bw.copy(newBoard)
+
 		mcs.bw = *newBoard
+
 		mcs.mcw.hasChanges = false
 	}
 
@@ -81,5 +92,5 @@ func (mcs *mapCreationScreen) tick() {
 	mcs.mcw.draw()
 	mcs.bw.draw(mcs.tileset)
 	mcs.tsw.draw()
-	mcs.ew.draw(mcs.mcw, mcs.bw)
+	mcs.ew.draw(*mcs.mc, mcs.bw)
 }

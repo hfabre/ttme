@@ -13,8 +13,8 @@ func (t tile) index32() int32 {
 func (t tile) getTilsetPosition(tileset tileset) (float32, float32) {
 	tilesetWidth := tileset.tilesByLine()
 
-	tileX := float32((t.index32() % tilesetWidth) * TileHeight)
-	tileY := float32((t.index32() / tilesetWidth) * TileHeight)
+	tileX := float32((t.index32() % tilesetWidth) * int32(tileset.mc.tileHeight))
+	tileY := float32((t.index32() / tilesetWidth) * int32(tileset.mc.tileHeight))
 
 	return tileX, tileY
 }
@@ -26,7 +26,7 @@ func (t tile) draw(x, y int, tileset tileset) {
 	tileX, tileY := t.getTilsetPosition(tileset)
 
 	pos := rl.Vector2{x32, y32}
-	subRec := rl.Rectangle{tileX, tileY, TileWidth, TileHeight}
+	subRec := rl.Rectangle{tileX, tileY, float32(tileset.mc.tileWidth), float32(tileset.mc.tileHeight)}
 
 	rl.DrawTextureRec(tileset.texture, subRec, pos, rl.White)
 }
