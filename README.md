@@ -30,6 +30,7 @@ Clean build folders
 - Chose map size
 - Draw map
 - JSON export
+- Use own tileset (tile size has to be specified at map creation)
 
 ![Ttme Demo](assets/ttme-demo.gif)
 
@@ -61,8 +62,6 @@ Since I don't use this project at the moment, it'll evolve but slowly while I ha
 
 ### Little feature
 
-- Use custom tileset with every tile size (hard-coded as 16px for now)
-- Export to given file
 - Export to YML
 - Reload existing map
 
