@@ -14,18 +14,19 @@ type exportWidget struct {
 
 type jsonExport struct {
 	Width, Height int
+	TileWidth, TileHeight int
 	Board [][]int
 }
 
-func (ew exportWidget) draw(mcw mapConfigurationWidget, board boardWidget) {
+func (ew exportWidget) draw(mc mapConfiguration, board boardWidget) {
 	if raygui.Button(rl.Rectangle{float32(ew.offsetX), float32(ew.offsetY), 90, 15}, "Export to JSON") {
 		path, _ := dialog.File().Filter("JSON files", "json").Title("Export to JSON").Save()
-		ew.exportJSON(path, mcw, board)
+		ew.exportJSON(path, mc, board)
 	}
 }
 
-func (ew exportWidget) exportJSON(path string, mcw mapConfigurationWidget, board boardWidget) {
-	export := jsonExport{Width: mcw.width, Height: mcw.height}
+func (ew exportWidget) exportJSON(path string, mc mapConfiguration, board boardWidget) {
+	export := jsonExport{Width: mc.width, Height: mc.height, TileWidth: mc.tileWidth, TileHeight: mc.tileHeight}
 
 	export.Board = make([][]int, export.Height)
 	for y := 0; y < export.Height; y++ {

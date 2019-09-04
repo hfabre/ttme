@@ -5,6 +5,7 @@ import (
 )
 
 type tileSelectorWidget struct {
+	mc *mapConfiguration
 	tileset tileset
 	offsetX float32
 	offsetY float32
@@ -12,8 +13,8 @@ type tileSelectorWidget struct {
 }
 
 func (ts *tileSelectorWidget) selectTile(x, y float32) {
-	tileX := (x - ts.offsetX) / TileWidth
-	tileY := (y - ts.offsetY) / TileHeight
+	tileX := (x - ts.offsetX) / float32(ts.mc.tileWidth)
+	tileY := (y - ts.offsetY) / float32(ts.mc.tileHeight)
 	tilePos := int32(tileY) * ts.tileset.tilesByLine() + int32(tileX)
 
 	ts.selectedTile = tile{int(tilePos)}
@@ -33,5 +34,5 @@ func (ts tileSelectorWidget) draw() {
 	x := ts.offsetX + tileX
 	y := ts.offsetY + tileY
 
-	rl.DrawRectangleLines(int32(x), int32(y), TileWidth, TileHeight, rl.Red)
+	rl.DrawRectangleLines(int32(x), int32(y), int32(ts.mc.tileWidth), int32(ts.mc.tileHeight), rl.Red)
 }

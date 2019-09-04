@@ -16,6 +16,10 @@ func makeNewMapScreen() newMapScreen {
 	return newMapScreen{"16", "16", "20", "20", mapConfiguration{}}
 }
 
+func (nms newMapScreen) load() {
+	// Implement Screen interface
+}
+
 func (nms newMapScreen) unload() {
 	// Implement Screen interface
 }
@@ -44,6 +48,6 @@ func (nms *newMapScreen) tick() {
 		nms.mc.tileWidth, _ = strconv.Atoi(nms.tileWidthInput)
 		nms.mc.tileHeight, _ = strconv.Atoi(nms.tileHeightInput)
 
-		// Switch screen to map edition
+		smInstance().switchScreen("map_creation")
 	}
 }
