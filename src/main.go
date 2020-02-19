@@ -5,7 +5,7 @@ import (
 )
 
 func main() {
-	rl.InitWindow(800, 600, "TTME")
+	rl.InitWindow(1200, 900, "TTME")
 	rl.SetTargetFPS(60)
 
 	nms := makeNewMapScreen()
