@@ -1,0 +1,38 @@
+#
+# rgl layout text file (v2.1) - raygui layout file generated using rGuiLayout
+#
+# Number of controls:     20
+#
+# Ref. window:    r <x> <y> <width> <height>
+# Anchor info:    a <id> <name> <posx> <posy> <enabled>
+# Control info:   c <id> <type> <name> <rectangle> <anchor_id> <text>
+#
+r 0 0 -1 -1
+a 000 anchorMain 0 0 0
+a 001 anchor01 25 299 1
+a 002 anchor02 25 45 1
+a 003 anchor03 9 150 1
+a 004 anchor04 911 789 1
+a 005 anchor05 0 0 0
+a 006 anchor06 0 0 0
+a 007 anchor07 0 0 0
+c 000 21 ScrollPanel000 419 72 790 699 0 
+c 001 5 Button001 926 810 125 30 0 SAMPLE TEXT
+c 002 5 Button002 1075 810 125 30 0 SAMPLE TEXT
+c 003 21 ScrollPanel003 30 174 369 96 0 
+c 004 5 Button004 26 811 125 30 0 SAMPLE TEXT
+c 005 5 Button009 278 100 125 30 0 SAMPLE TEXT
+c 006 16 Spinner006 147 74 125 25 0 
+c 007 16 Spinner007 147 106 125 25 0 
+c 008 4 Label008 42 73 126 25 0 SAMPLE TEXT
+c 009 4 Label009 40 112 126 25 0 SAMPLE TEXT
+c 010 16 Spinner010 243 786 125 25 0 
+c 011 16 Spinner011 243 816 125 25 0 
+c 012 4 Label012 162 786 126 25 0 SAMPLE TEXT
+c 013 4 Label013 163 820 126 25 0 SAMPLE TEXT
+c 014 5 Button014 382 811 31 31 0 SAMPLE TEXT
+c 015 1 GroupBox015 -5 0 397 548 1 SAMPLE TEXT
+c 016 21 ScrollPanel016 0 8 387 470 1 
+c 017 1 GroupBox017 0 0 387 101 2 SAMPLE TEXT
+c 018 1 GroupBox018 13 6 390 125 3 SAMPLE TEXT
+c 019 1 GroupBox019 0 0 302 58 4 SAMPLE TEXT
