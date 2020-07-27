@@ -32,10 +32,14 @@ func (tm tilemap) Draw() {
 				color = r.Yellow
 			case 40:
 				color = r.Orange
-			case 50:
+			case 49:
 				color = r.Red
 			default:
 				color = r.Black
+			}
+
+			if x == 45 {
+				color = r.Gray
 			}
 			r.DrawRectangle(x * tm.tileset.tileWidth, y * tm.tileset.tileHeight, tm.tileset.tileWidth, tm.tileset.tileHeight, color)
 		}
