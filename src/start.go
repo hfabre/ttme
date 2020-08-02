@@ -5,7 +5,7 @@ func Start() {
 	r.InitWindow(1280, 900, "Raylib Go Plus")
 	tileset := *NewTileset(16, 16, "toto")
 	tilemap := tilemap{tileset: tileset, width: 50, height: 50}
-	tilemapWidget := NewTilemapWidget(420, 70, 790, 700, tilemap)
+	tilemapWidget := NewTilemapWidget(420, 70, 800, 700, tilemap)
 
 	for !r.WindowShouldClose() {
 		r.BeginDrawing()

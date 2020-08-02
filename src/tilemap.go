@@ -1,6 +1,8 @@
 package ttme
 
-import r "github.com/lachee/raylib-goplus/raylib"
+import (
+	r "github.com/lachee/raylib-goplus/raylib"
+)
 
 type tileset struct {
 	tileWidth, tileHeight int // in pixel
@@ -24,13 +26,15 @@ func (tm tilemap) Draw() {
 	for y := 0; y < tm.height; y++ {
 		for x := 0; x < tm.width; x++ {
 			switch y {
-			case 10:
+			case 0:
+				color = r.White
+			case 9:
 				color = r.Blue
-			case 20:
+			case 19:
 				color = r.Green
-			case 30:
+			case 29:
 				color = r.Yellow
-			case 40:
+			case 39:
 				color = r.Orange
 			case 49:
 				color = r.Red
