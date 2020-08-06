@@ -19,7 +19,7 @@ func (t tile) GetTilsetPosition(tileset tileset) (float32, float32) {
 	return tileX, tileY
 }
 
-func (t tile) draw(x, y int, tileset tileset) {
+func (t tile) Draw(x, y int, tileset tileset) {
 
 	if t.index == -1 {
 		r.DrawRectangle(x, y, tileset.tileWidth, tileset.tileHeight, r.Black)

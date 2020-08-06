@@ -35,9 +35,27 @@ func (tmw *tilemapWidget) Draw() {
 	verticalOffset := tmw.tilemap.PixelHeight() - int(tmw.view.Height) - 1
 
 	// Note: Since we vertically invert texture we need to invert scroll (Y) as well,
-	mapView := r.Rectangle{X: -tmw.panelScroll.X, Y: tmw.panelScroll.Y + float32(verticalOffset), Width: tmw.view.Width, Height: -tmw.view.Height}
+	mapView := r.Rectangle{X: -(tmw.panelScroll.X - 1), Y: tmw.panelScroll.Y + float32(verticalOffset), Width: tmw.view.Width, Height: -tmw.view.Height}
 	r.DrawTextureRec(tmw.targetTexture.Texture, mapView, r.Vector2{X: float32(tmw.x), Y: float32(tmw.y)}, r.White)
 }
+
+func (tmw tilemapWidget) Contains(x, y float32) bool {
+	point := r.Vector2{x, y}
+
+	return r.CheckCollisionPointRec(point, tmw.view)
+}
+
+func (tmw *tilemapWidget) SetTile(x, y int, tile tile) {
+	tmw.tilemap.tiles[y][x] = tile
+}
+
+func (tmw *tilemapWidget) SetTileFromPos(x, y float32, tile tile) {
+	tileX := (x - tmw.view.X) / float32(tmw.tilemap.tileset.tileWidth)
+	tileY := (y - tmw.view.Y) / float32(tmw.tilemap.tileset.tileHeight)
+
+	tmw.SetTile(int(tileX), int(tileY), tile)
+}
+
 
 func (tmw tilemapWidget) ShowInfo() {
 	scrollInfo := fmt.Sprintf("Scroll state: %f - %f", tmw.panelScroll.X, tmw.panelScroll.Y)

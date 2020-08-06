@@ -32,10 +32,11 @@ func (a app) ShowInfo() {
 	r.DrawText(mouseStateInfo, 10, 30, 10, r.Black)
 }
 
+// TODO: Handle mouse press when clickable is also scrollable and scrolled
 func (a *app) Start() {
 	tileset := *NewTileset(16, 16, "./assets/tilesetpkm.png")
 	tilesetWidget := NewTilesetWidget(30, 325, 370, 470, tileset)
-	tilemap := tilemap{tileset: tileset, width: 50, height: 50}
+	tilemap := *NewTilemap(50, 50, tileset)
 	tilemapWidget := NewTilemapWidget(420, 95, 800, 700, tilemap)
 
 	for !r.WindowShouldClose() {
@@ -48,7 +49,6 @@ func (a *app) Start() {
 			a.mousePressed = true
 
 			if tilesetWidget.Contains(a.mousePosition.X, a.mousePosition.Y) {
-				println("Select tile")
 				tilesetWidget.SelectTile(a.mousePosition.X, a.mousePosition.Y)
 			}
 		}
@@ -58,10 +58,10 @@ func (a *app) Start() {
 		}
 
 		// Handle tile pasting
-		//
-		//if mcs.mousePressed && mcs.bw.contains(mousePosition.X, mousePosition.Y) {
-		//	mcs.bw.setTileFromPos(mousePosition.X, mousePosition.Y, mcs.tsw.selectedTile)
-		//}
+
+		if a.mousePressed && tilemapWidget.Contains(a.mousePosition.X, a.mousePosition.Y) {
+			tilemapWidget.SetTileFromPos(a.mousePosition.X, a.mousePosition.Y, tilesetWidget.selectedTile)
+		}
 
 		r.BeginDrawing()
 		r.ClearBackground(r.RayWhite)

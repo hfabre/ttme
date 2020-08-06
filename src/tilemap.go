@@ -1,41 +1,33 @@
 package ttme
 
-import (
-	r "github.com/lachee/raylib-goplus/raylib"
-)
-
 type tilemap struct {
 	width, height int // in tile
 	tileset tileset
+	tiles [][]tile
 	// actions (Array<Object> (custom tiles action) [name, color, attributes(json)])
 }
 
-func (tm tilemap) Draw() {
-	color := r.Black
+func NewTilemap(width, height int, tileset tileset) *tilemap {
+	newTilemap := tilemap{width: width, height: height, tileset: tileset}
+	newTilemap.FillEmptyBoard()
 
+	return &newTilemap
+}
+
+func (tm *tilemap) FillEmptyBoard() {
+	tm.tiles = make([][]tile, tm.height)
+	for y := 0; y < tm.height; y++ {
+		tm.tiles[y] = make([]tile, tm.width)
+		for x := 0; x < tm.width; x++ {
+			tm.tiles[y][x] = tile{-1}
+		}
+	}
+}
+
+func (tm tilemap) Draw() {
 	for y := 0; y < tm.height; y++ {
 		for x := 0; x < tm.width; x++ {
-			switch y {
-			case 0:
-				color = r.White
-			case 9:
-				color = r.Blue
-			case 19:
-				color = r.Green
-			case 29:
-				color = r.Yellow
-			case 39:
-				color = r.Orange
-			case 49:
-				color = r.Red
-			default:
-				color = r.Black
-			}
-
-			if x == 45 {
-				color = r.Gray
-			}
-			r.DrawRectangle(x * tm.tileset.tileWidth, y * tm.tileset.tileHeight, tm.tileset.tileWidth, tm.tileset.tileHeight, color)
+			tm.tiles[y][x].Draw(x * tm.tileset.tileWidth, y * tm.tileset.tileHeight, tm.tileset)
 		}
 	}
 }
