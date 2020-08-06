@@ -3,5 +3,6 @@ package main
 import ttme "ttme/src"
 
 func main() {
-	ttme.Start()
+	app := ttme.NewApp(1400, 900, "ttme")
+	app.Start()
 }

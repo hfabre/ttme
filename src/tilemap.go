@@ -4,16 +4,6 @@ import (
 	r "github.com/lachee/raylib-goplus/raylib"
 )
 
-type tileset struct {
-	tileWidth, tileHeight int // in pixel
-	imagePath string
-	//image r.Texture2D
-}
-
-func NewTileset(tileWidth, tileHeight int, imagePath string) *tileset {
-	return &tileset{tileWidth:  tileWidth, tileHeight: tileHeight, imagePath: imagePath}
-}
-
 type tilemap struct {
 	width, height int // in tile
 	tileset tileset
