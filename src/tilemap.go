@@ -2,12 +2,12 @@ package ttme
 
 type tilemap struct {
 	width, height int // in tile
-	tileset tileset
+	tileset *tileset
 	tiles [][]tile
 	// actions (Array<Object> (custom tiles action) [name, color, attributes(json)])
 }
 
-func NewTilemap(width, height int, tileset tileset) *tilemap {
+func NewTilemap(width, height int, tileset *tileset) *tilemap {
 	newTilemap := tilemap{width: width, height: height, tileset: tileset}
 	newTilemap.FillEmptyBoard()
 
@@ -27,7 +27,7 @@ func (tm *tilemap) FillEmptyBoard() {
 func (tm tilemap) Draw() {
 	for y := 0; y < tm.height; y++ {
 		for x := 0; x < tm.width; x++ {
-			tm.tiles[y][x].Draw(x * tm.tileset.tileWidth, y * tm.tileset.tileHeight, tm.tileset)
+			tm.tiles[y][x].Draw(x * tm.tileset.tileWidth, y * tm.tileset.tileHeight, *tm.tileset)
 		}
 	}
 }

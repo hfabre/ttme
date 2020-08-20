@@ -15,6 +15,12 @@ func NewTileset(tileWidth, tileHeight int, imagePath string) *tileset {
 	return &newTileset
 }
 
+func (t *tileset) ChangeImage(imagePath string) {
+	r.UnloadTexture(t.texture)
+	t.imagePath = imagePath
+	t.texture = r.LoadTexture(t.imagePath)
+}
+
 func (t tileset) PixelWidth() int {
 	return int(t.texture.Width)
 }

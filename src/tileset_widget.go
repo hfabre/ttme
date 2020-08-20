@@ -7,14 +7,14 @@ import (
 
 type tilesetWidget struct {
 	x, y, width, height int
-	tileset tileset
+	tileset *tileset
 	panelScroll r.Vector2
 	targetTexture r.RenderTexture2D
 	view r.Rectangle
 	selectedTile tile
 }
 
-func NewTilesetWidget(x, y, width, height int, tileset tileset) *tilesetWidget {
+func NewTilesetWidget(x, y, width, height int, tileset *tileset) *tilesetWidget {
 	newWidget := tilesetWidget{x: x, y: y, tileset: tileset}
 	newWidget.width = width
 	newWidget.height = height
@@ -42,7 +42,7 @@ func (tsw tilesetWidget) Contains(x, y float32) bool {
 func (tsw *tilesetWidget) Draw() {
 	content := r.Rectangle{X: 0, Y: 0, Width: float32(tsw.tileset.PixelWidth()), Height: float32(tsw.tileset.PixelHeight())}
 	tsw.view, tsw.panelScroll = r.GuiScrollPanel(tsw.Bounds(), content, tsw.panelScroll)
-	tileX, tileY := tsw.selectedTile.GetTilsetPosition(tsw.tileset)
+	tileX, tileY := tsw.selectedTile.GetTilsetPosition(*tsw.tileset)
 
 	r.BeginTextureMode(tsw.targetTexture)
 	tsw.tileset.Draw()

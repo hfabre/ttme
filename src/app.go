@@ -35,9 +35,10 @@ func (a app) ShowInfo() {
 // TODO: Handle mouse press when clickable is also scrollable and scrolled
 func (a *app) Start() {
 	tileset := *NewTileset(16, 16, "./assets/tilesetpkm.png")
-	tilesetWidget := NewTilesetWidget(30, 325, 370, 470, tileset)
-	tilemap := *NewTilemap(50, 50, tileset)
+	tilesetWidget := NewTilesetWidget(30, 325, 370, 470, &tileset)
+	tilemap := *NewTilemap(50, 50, &tileset)
 	tilemapWidget := NewTilemapWidget(420, 95, 800, 700, tilemap)
+	tilsetConfigurationWidget := NewTilesetConfigurationWidget(30, 750, &tileset)
 
 	for !r.WindowShouldClose() {
 
@@ -67,7 +68,13 @@ func (a *app) Start() {
 		r.ClearBackground(r.RayWhite)
 		tilemapWidget.Draw()
 		tilesetWidget.Draw()
+		tilsetConfigurationWidget.Draw()
 		a.ShowInfo()
+		tilesetinfo := fmt.Sprintf("Tileset: %v - %v / %v", tileset.tileWidth, tileset.tileHeight, tileset.imagePath)
+		tilemapinfo := fmt.Sprintf("Tilemap: %v - %v", tilemap.width, tilemap.height)
+
+		r.DrawText(tilesetinfo, 10, 50, 10, r.Black)
+		r.DrawText(tilemapinfo, 10, 70, 10, r.Black)
 		r.EndDrawing()
 	}
 	r.CloseWindow()
