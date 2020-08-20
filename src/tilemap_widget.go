@@ -49,9 +49,10 @@ func (tmw *tilemapWidget) SetTile(x, y int, tile tile) {
 	tmw.tilemap.tiles[y][x] = tile
 }
 
+// Note: panelScroll Offset
 func (tmw *tilemapWidget) SetTileFromPos(x, y float32, tile tile) {
-	tileX := (x - tmw.view.X) / float32(tmw.tilemap.tileset.tileWidth)
-	tileY := (y - tmw.view.Y) / float32(tmw.tilemap.tileset.tileHeight)
+	tileX := (x - tmw.view.X - tmw.panelScroll.X) / float32(tmw.tilemap.tileset.tileWidth)
+	tileY := (y - tmw.view.Y - tmw.panelScroll.Y) / float32(tmw.tilemap.tileset.tileHeight)
 
 	tmw.SetTile(int(tileX), int(tileY), tile)
 }
