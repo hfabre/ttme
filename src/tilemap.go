@@ -19,7 +19,7 @@ func (tm *tilemap) FillEmptyBoard() {
 	for y := 0; y < tm.height; y++ {
 		tm.tiles[y] = make([]tile, tm.width)
 		for x := 0; x < tm.width; x++ {
-			tm.tiles[y][x] = tile{-1}
+			tm.tiles[y][x] = tile{index: -1}
 		}
 	}
 }

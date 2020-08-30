@@ -39,7 +39,8 @@ func (a *app) Start() {
 	tilemap := *NewTilemap(50, 50, &tileset)
 	tilemapWidget := NewTilemapWidget(420, 95, 800, 700, tilemap)
 	tilsetConfigurationWidget := NewTilesetConfigurationWidget(30, 750, &tileset)
-
+	tilePropertiesWidget := NewTilePropertiesWidget(25, 300)
+	print(tilePropertiesWidget.AsText())
 	for !r.WindowShouldClose() {
 
 		// Handle Mouse inputs
@@ -49,7 +50,8 @@ func (a *app) Start() {
 		if r.IsMouseButtonPressed(r.MouseLeftButton) {
 			a.mousePressed = true
 
-			if tilesetWidget.Contains(a.mousePosition.X, a.mousePosition.Y) {
+			if !tilePropertiesWidget.editMode && tilesetWidget.Contains(a.mousePosition.X, a.mousePosition.Y) {
+				tilePropertiesWidget.Unset()
 				tilesetWidget.SelectTile(a.mousePosition.X, a.mousePosition.Y)
 			}
 		}
@@ -61,7 +63,11 @@ func (a *app) Start() {
 		// Handle tile pasting
 
 		if a.mousePressed && tilemapWidget.Contains(a.mousePosition.X, a.mousePosition.Y) {
-			tilemapWidget.SetTileFromPos(a.mousePosition.X, a.mousePosition.Y, tilesetWidget.selectedTile)
+			if tilePropertiesWidget.Selected() {
+				tilemapWidget.SetTileFromPos(a.mousePosition.X, a.mousePosition.Y, tilesetWidget.selectedTile)
+			} else {
+				tilemapWidget.SetPropertyFromPos(a.mousePosition.X, a.mousePosition.Y, tilePropertiesWidget.SelectedProperty())
+			}
 		}
 
 		r.BeginDrawing()
@@ -69,10 +75,11 @@ func (a *app) Start() {
 		tilemapWidget.Draw()
 		tilesetWidget.Draw()
 		tilsetConfigurationWidget.Draw()
+		tilePropertiesWidget.Draw()
+
 		a.ShowInfo()
 		tilesetinfo := fmt.Sprintf("Tileset: %v - %v / %v", tileset.tileWidth, tileset.tileHeight, tileset.imagePath)
 		tilemapinfo := fmt.Sprintf("Tilemap: %v - %v", tilemap.width, tilemap.height)
-
 		r.DrawText(tilesetinfo, 10, 50, 10, r.Black)
 		r.DrawText(tilemapinfo, 10, 70, 10, r.Black)
 		r.EndDrawing()

@@ -4,6 +4,7 @@ import r "github.com/lachee/raylib-goplus/raylib"
 
 type tile struct {
 	index int
+	properties []tileProperty
 }
 
 func (t tile) Index32() int32 {
@@ -19,6 +20,10 @@ func (t tile) GetTilsetPosition(tileset tileset) (float32, float32) {
 	return tileX, tileY
 }
 
+func (t *tile) AddProperty(property tileProperty) {
+	t.properties = append(t.properties, property)
+}
+
 func (t tile) Draw(x, y int, tileset tileset) {
 
 	if t.index == -1 {
@@ -31,7 +36,12 @@ func (t tile) Draw(x, y int, tileset tileset) {
 
 		pos := r.Vector2{X: x32, Y: y32}
 		subRec := r.Rectangle{X: tileX, Y: tileY, Width: float32(tileset.tileWidth), Height: float32(tileset.tileHeight)}
+		color := r.White
 
-		r.DrawTextureRec(tileset.texture, subRec, pos, r.White)
+		if len(t.properties) > 0 {
+			color = t.properties[0].color
+		}
+
+		r.DrawTextureRec(tileset.texture, subRec, pos, color)
 	}
 }
