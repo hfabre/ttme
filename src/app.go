@@ -35,12 +35,13 @@ func (a app) ShowInfo() {
 // TODO: Handle mouse press when clickable is also scrollable and scrolled
 func (a *app) Start() {
 	tileset := *NewTileset(16, 16, "./assets/tilesetpkm.png")
-	tilesetWidget := NewTilesetWidget(30, 325, 370, 470, &tileset)
-	tilemap := *NewTilemap(50, 50, &tileset)
+	tilesetWidget := NewTilesetWidget(30, 325, 370, 370, &tileset)
+	tilemap := NewTilemap(50, 50, &tileset)
 	tilemapWidget := NewTilemapWidget(420, 95, 800, 700, tilemap)
-	tilsetConfigurationWidget := NewTilesetConfigurationWidget(30, 750, &tileset)
-	tilePropertiesWidget := NewTilePropertiesWidget(25, 300)
-	print(tilePropertiesWidget.AsText())
+	tilsetConfigurationWidget := NewTilesetConfigurationWidget(30, 650, &tileset)
+	tilePropertiesWidget := NewTilePropertiesWidget(25, 200)
+	tilemapConfigurationWidget := NewTilemapConfigurationWidget(80, 100, tilemap)
+
 	for !r.WindowShouldClose() {
 
 		// Handle Mouse inputs
@@ -75,6 +76,7 @@ func (a *app) Start() {
 		tilemapWidget.Draw()
 		tilesetWidget.Draw()
 		tilsetConfigurationWidget.Draw(tilemapWidget)
+		tilemapConfigurationWidget.Draw(tilemapWidget)
 		tilePropertiesWidget.Draw()
 
 		a.ShowInfo()

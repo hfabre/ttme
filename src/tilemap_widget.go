@@ -7,13 +7,13 @@ import (
 
 type tilemapWidget struct {
 	x, y, width, height int
-	tilemap tilemap
+	tilemap *tilemap
 	panelScroll r.Vector2
 	targetTexture r.RenderTexture2D
 	view r.Rectangle
 }
 
-func NewTilemapWidget(x, y, width, height int, tilemap tilemap) *tilemapWidget {
+func NewTilemapWidget(x, y, width, height int, tilemap *tilemap) *tilemapWidget {
 	newWidget := tilemapWidget{x: x, y: y, tilemap: tilemap}
 	newWidget.width = width
 	newWidget.height = height
@@ -23,7 +23,7 @@ func NewTilemapWidget(x, y, width, height int, tilemap tilemap) *tilemapWidget {
 	return &newWidget
 }
 
-func (tmw *tilemapWidget) UpdateTileset() {
+func (tmw *tilemapWidget) Update() {
 	r.UnloadRenderTexture(tmw.targetTexture)
 	tmw.targetTexture = r.LoadRenderTexture(tmw.tilemap.PixelWidth(), tmw.tilemap.PixelHeight())
 }

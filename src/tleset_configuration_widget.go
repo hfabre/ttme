@@ -39,6 +39,6 @@ func (tscw *tilesetConfigurationWidget) Draw(widget *tilemapWidget) {
 			tscw.newTilsesetPath = ""
 		}
 
-		widget.UpdateTileset()
+		widget.Update()
 	}
 }
