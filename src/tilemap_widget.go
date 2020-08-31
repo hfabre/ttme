@@ -23,6 +23,11 @@ func NewTilemapWidget(x, y, width, height int, tilemap tilemap) *tilemapWidget {
 	return &newWidget
 }
 
+func (tmw *tilemapWidget) UpdateTileset() {
+	r.UnloadRenderTexture(tmw.targetTexture)
+	tmw.targetTexture = r.LoadRenderTexture(tmw.tilemap.PixelWidth(), tmw.tilemap.PixelHeight())
+}
+
 func (tmw *tilemapWidget) Draw() {
 	content := r.Rectangle{X: 0, Y: 0, Width: float32(tmw.tilemap.PixelWidth()), Height: float32(tmw.tilemap.PixelHeight())}
 	tmw.view, tmw.panelScroll = r.GuiScrollPanel(tmw.Bounds(), content, tmw.panelScroll)

@@ -74,7 +74,7 @@ func (a *app) Start() {
 		r.ClearBackground(r.RayWhite)
 		tilemapWidget.Draw()
 		tilesetWidget.Draw()
-		tilsetConfigurationWidget.Draw()
+		tilsetConfigurationWidget.Draw(tilemapWidget)
 		tilePropertiesWidget.Draw()
 
 		a.ShowInfo()

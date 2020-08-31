@@ -22,7 +22,8 @@ func NewTilesetConfigurationWidget(x, y int, tileset *tileset) *tilesetConfigura
 	return &newWidget
 }
 
-func (tscw *tilesetConfigurationWidget) Draw() {
+// TODO: implement a messaging system to avoid passing other widget ?
+func (tscw *tilesetConfigurationWidget) Draw(widget *tilemapWidget) {
 	if (r.GuiButton(r.Rectangle{X: float32(tscw.x), Y: float32(tscw.y) + 50, Width: 75, Height: 25}, "Select tileset")) {
 		tscw.newTilsesetPath, _ = dialog.File().Load()
 	}
@@ -37,5 +38,7 @@ func (tscw *tilesetConfigurationWidget) Draw() {
 			tscw.tileset.ChangeImage(tscw.newTilsesetPath)
 			tscw.newTilsesetPath = ""
 		}
+
+		widget.UpdateTileset()
 	}
 }
