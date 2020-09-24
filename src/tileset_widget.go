@@ -26,8 +26,8 @@ func NewTilesetWidget(x, y, width, height int, tileset *tileset) *tilesetWidget 
 }
 
 func (tsw *tilesetWidget) SelectTile(x, y float32) {
-	tileX := (x - float32(tsw.x)) / float32(tsw.tileset.tileWidth)
-	tileY := (y - float32(tsw.y)) / float32(tsw.tileset.tileHeight)
+	tileX := (x - float32(tsw.x) - tsw.panelScroll.X) / float32(tsw.tileset.tileWidth)
+	tileY := (y - float32(tsw.y) - tsw.panelScroll.Y) / float32(tsw.tileset.tileHeight)
 	tilePos := int32(tileY) * tsw.tileset.TilesByLine() + int32(tileX)
 
 	tsw.selectedTile = tile{index: int(tilePos)}
