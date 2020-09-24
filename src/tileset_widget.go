@@ -20,17 +20,17 @@ func NewTilesetWidget(x, y, width, height int, tileset *tileset) *tilesetWidget 
 	newWidget.height = height
 	newWidget.panelScroll = r.Vector2{X: 0, Y: 0}
 	newWidget.targetTexture = r.LoadRenderTexture(tileset.PixelWidth(), tileset.PixelHeight())
-	newWidget.selectedTile = tile{index: -1}
+	newWidget.selectedTile = tile{Index: -1}
 
 	return &newWidget
 }
 
 func (tsw *tilesetWidget) SelectTile(x, y float32) {
-	tileX := (x - float32(tsw.x) - tsw.panelScroll.X) / float32(tsw.tileset.tileWidth)
-	tileY := (y - float32(tsw.y) - tsw.panelScroll.Y) / float32(tsw.tileset.tileHeight)
+	tileX := (x - float32(tsw.x) - tsw.panelScroll.X) / float32(tsw.tileset.TileWidth)
+	tileY := (y - float32(tsw.y) - tsw.panelScroll.Y) / float32(tsw.tileset.TileHeight)
 	tilePos := int32(tileY) * tsw.tileset.TilesByLine() + int32(tileX)
 
-	tsw.selectedTile = tile{index: int(tilePos)}
+	tsw.selectedTile = tile{Index: int(tilePos)}
 }
 
 func (tsw tilesetWidget) Contains(x, y float32) bool {
@@ -46,7 +46,7 @@ func (tsw *tilesetWidget) Draw() {
 
 	r.BeginTextureMode(tsw.targetTexture)
 	tsw.tileset.Draw()
-	r.DrawRectangleLines(int(tileX), int(tileY), tsw.tileset.tileWidth, tsw.tileset.tileHeight, r.Red)
+	r.DrawRectangleLines(int(tileX), int(tileY), tsw.tileset.TileWidth, tsw.tileset.TileHeight, r.Red)
 	r.EndTextureMode()
 
 	// Note: We have to take back one because scroll offset starts at one
@@ -61,7 +61,7 @@ func (tsw tilesetWidget) ShowInfo() {
 	scrollInfo := fmt.Sprintf("Scroll state: %f - %f", tsw.panelScroll.X, tsw.panelScroll.Y)
 	viewInfo := fmt.Sprintf("View rect: %f - %f - %f - %f", tsw.view.X, tsw.view.Y, tsw.view.Width, tsw.view.Height)
 	mapInfo := fmt.Sprintf("set size: %d - %d", tsw.tileset.PixelWidth(), tsw.tileset.PixelHeight())
-	selectedTileInfo := fmt.Sprintf("Selected tile: %v", tsw.selectedTile.index)
+	selectedTileInfo := fmt.Sprintf("Selected tile: %v", tsw.selectedTile.Index)
 
 	r.DrawText(scrollInfo, tsw.x + 10, tsw.y + 10, 14, r.Red)
 	r.DrawText(viewInfo, tsw.x + 10, tsw.y + 30, 14, r.Red)

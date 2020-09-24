@@ -13,8 +13,8 @@ type tilesetConfigurationWidget struct {
 
 func NewTilesetConfigurationWidget(x, y int, tileset *tileset) *tilesetConfigurationWidget {
 	newWidget := tilesetConfigurationWidget{x: x, y: y, tileset: tileset}
-	newWidget.tileWidth = tileset.tileWidth
-	newWidget.tileHeight = tileset.tileHeight
+	newWidget.tileWidth = tileset.TileWidth
+	newWidget.tileHeight = tileset.TileHeight
 	newWidget.tileWidthBoxEditMode = false
 	newWidget.tileHeightBoxEditMode = false
 	newWidget.newTilsesetPath = ""
@@ -32,8 +32,8 @@ func (tscw *tilesetConfigurationWidget) Draw(widget *tilemapWidget) {
 	tscw.tileHeightBoxEditMode, tscw.tileHeight = r.GuiSpinner(r.Rectangle{X: float32(tscw.x) + 180, Y: float32(tscw.y) + 80, Width: 125, Height: 25}, "Tile height: ", tscw.tileHeight, 1, 124, tscw.tileHeightBoxEditMode)
 
 	if (r.GuiButton(r.Rectangle{X: float32(tscw.x) + 320, Y: float32(tscw.y) + 80, Width: 50, Height: 25}, "Save")) {
-		tscw.tileset.tileWidth = tscw.tileWidth
-		tscw.tileset.tileHeight = tscw.tileHeight
+		tscw.tileset.TileWidth = tscw.tileWidth
+		tscw.tileset.TileHeight = tscw.tileHeight
 		if tscw.newTilsesetPath != "" {
 			tscw.tileset.ChangeImage(tscw.newTilsesetPath)
 			tscw.newTilsesetPath = ""

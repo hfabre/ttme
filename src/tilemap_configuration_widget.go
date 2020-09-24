@@ -10,7 +10,7 @@ type tilemapConfigurationWidget struct {
 }
 
 func NewTilemapConfigurationWidget(x, y int, tilemap *tilemap) *tilemapConfigurationWidget {
-	newWidget := tilemapConfigurationWidget{x: x, y: y, tilemap: tilemap, mapWidth: tilemap.width, mapHeight: tilemap.height}
+	newWidget := tilemapConfigurationWidget{x: x, y: y, tilemap: tilemap, mapWidth: tilemap.Width, mapHeight: tilemap.Height}
 	newWidget.mapWidthBoxEditMode = false
 	newWidget.mapHeightBoxEditMode = false
 

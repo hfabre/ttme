@@ -1,8 +1,11 @@
 package ttme
 
 import (
+	"encoding/json"
 	"fmt"
 	r "github.com/lachee/raylib-goplus/raylib"
+	"github.com/sqweek/dialog"
+	"io/ioutil"
 )
 
 type tilemapWidget struct {
@@ -42,6 +45,12 @@ func (tmw *tilemapWidget) Draw() {
 	// Note: Since we vertically invert texture we need to invert scroll (Y) as well,
 	mapView := r.Rectangle{X: -(tmw.panelScroll.X - 1), Y: tmw.panelScroll.Y + float32(verticalOffset), Width: tmw.view.Width, Height: -tmw.view.Height}
 	r.DrawTextureRec(tmw.targetTexture.Texture, mapView, r.Vector2{X: float32(tmw.x), Y: float32(tmw.y)}, r.White)
+
+	if r.GuiButton(r.Rectangle{X: float32(tmw.x + tmw.width - 90), Y: float32(tmw.y + tmw.height + 10), Width: 90, Height: 25}, "Export to JSON") {
+		path, _ := dialog.File().Filter("JSON files", "json").Title("Export to JSON").Save()
+		file, _ := json.Marshal(*tmw.tilemap)
+		_ = ioutil.WriteFile(path, file, 0644)
+	}
 }
 
 func (tmw tilemapWidget) Contains(x, y float32) bool {
@@ -51,15 +60,15 @@ func (tmw tilemapWidget) Contains(x, y float32) bool {
 }
 
 func (tmw *tilemapWidget) SetTile(x, y int, tile tile) {
-	tmw.tilemap.tiles[y][x] = tile
+	tmw.tilemap.Tiles[y][x] = tile
 }
 
 func (tmw tilemapWidget) GetTileXFromPos(x float32)  int {
-	return int((x - tmw.view.X - tmw.panelScroll.X) / float32(tmw.tilemap.tileset.tileWidth))
+	return int((x - tmw.view.X - tmw.panelScroll.X) / float32(tmw.tilemap.Tileset.TileWidth))
 }
 
 func (tmw tilemapWidget) GetTileYFromPos(y float32)  int {
-	return int((y - tmw.view.Y - tmw.panelScroll.Y) / float32(tmw.tilemap.tileset.tileHeight))
+	return int((y - tmw.view.Y - tmw.panelScroll.Y) / float32(tmw.tilemap.Tileset.TileHeight))
 }
 
 // Note: panelScroll Offset
@@ -71,13 +80,13 @@ func (tmw *tilemapWidget) SetTileFromPos(x, y float32, tile tile) {
 }
 
 func (tmw *tilemapWidget) SetTileProperty(x, y int, property tileProperty) {
-	tmw.tilemap.tiles[y][x].AddProperty(property)
+	tmw.tilemap.Tiles[y][x].AddProperty(property)
 }
 
 // Note: panelScroll Offset
 func (tmw *tilemapWidget) SetPropertyFromPos(x, y float32, property tileProperty) {
-	tileX := (x - tmw.view.X - tmw.panelScroll.X) / float32(tmw.tilemap.tileset.tileWidth)
-	tileY := (y - tmw.view.Y - tmw.panelScroll.Y) / float32(tmw.tilemap.tileset.tileHeight)
+	tileX := (x - tmw.view.X - tmw.panelScroll.X) / float32(tmw.tilemap.Tileset.TileWidth)
+	tileY := (y - tmw.view.Y - tmw.panelScroll.Y) / float32(tmw.tilemap.Tileset.TileHeight)
 
 	tmw.SetTileProperty(int(tileX), int(tileY), property)
 }

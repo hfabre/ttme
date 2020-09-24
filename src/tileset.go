@@ -3,13 +3,14 @@ package ttme
 import r "github.com/lachee/raylib-goplus/raylib"
 
 type tileset struct {
-	tileWidth, tileHeight int // in pixel
-	imagePath string
-	texture r.Texture2D
+	TileWidth  int    `json:"tileWidth"`  // in pixel
+	TileHeight int    `json:"tileHeight"` // in pixel
+	ImagePath  string `json:"imagePath"`
+	texture    r.Texture2D
 }
 
 func NewTileset(tileWidth, tileHeight int, imagePath string) *tileset {
-	newTileset := tileset{tileWidth:  tileWidth, tileHeight: tileHeight, imagePath: imagePath}
+	newTileset := tileset{TileWidth: tileWidth, TileHeight: tileHeight, ImagePath: imagePath}
 	newTileset.texture = r.LoadTexture(imagePath)
 
 	return &newTileset
@@ -17,8 +18,8 @@ func NewTileset(tileWidth, tileHeight int, imagePath string) *tileset {
 
 func (t *tileset) ChangeImage(imagePath string) {
 	r.UnloadTexture(t.texture)
-	t.imagePath = imagePath
-	t.texture = r.LoadTexture(t.imagePath)
+	t.ImagePath = imagePath
+	t.texture = r.LoadTexture(t.ImagePath)
 }
 
 func (t tileset) PixelWidth() int {
@@ -30,7 +31,7 @@ func (t tileset) PixelHeight() int {
 }
 
 func (t tileset) TilesByLine() int32 {
-	return t.texture.Width / int32(t.tileWidth)
+	return t.texture.Width / int32(t.TileWidth)
 }
 
 func (t tileset) Draw() {

@@ -15,8 +15,8 @@ type tilePropertiesWidget struct {
 
 func NewTilePropertiesWidget(x, y int) *tilePropertiesWidget {
 	newWidget := tilePropertiesWidget{x: x, y: y}
-	newWidget.properties = append(newWidget.properties, tileProperty{name: "none"})
-	newWidget.properties = append(newWidget.properties, tileProperty{name: "blocking", value: "true", color: r.Green})
+	newWidget.properties = append(newWidget.properties, tileProperty{Name: "none"})
+	newWidget.properties = append(newWidget.properties, tileProperty{Name: "blocking", Value: "true", Color: r.Green})
 	newWidget.Reset()
 
 	return &newWidget
@@ -36,7 +36,7 @@ func (tpw *tilePropertiesWidget) Draw() {
 	tpw.propertyColor = r.GuiColorPicker(r.Rectangle{X: float32(tpw.x), Y: float32(tpw.y + 100), Width: 100, Height: 100}, tpw.propertyColor)
 
 	if (r.GuiButton(r.Rectangle{X: float32(tpw.x + 150), Y: float32(tpw.y) + 175, Width: 95, Height: 25}, "Create property")) {
-		tpw.properties = append(tpw.properties, tileProperty{name: tpw.propertyName, value: tpw.propertyValue, color: tpw.propertyColor})
+		tpw.properties = append(tpw.properties, tileProperty{Name: tpw.propertyName, Value: tpw.propertyValue, Color: tpw.propertyColor})
 		tpw.Reset()
 	}
 
@@ -88,7 +88,7 @@ func (tpw tilePropertiesWidget) AsText() string {
 			baseText += ";"
 		}
 
-		text += baseText + tpw.properties[i].name
+		text += baseText + tpw.properties[i].Name
 	}
 
 	return text

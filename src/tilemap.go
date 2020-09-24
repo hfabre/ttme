@@ -1,61 +1,62 @@
 package ttme
 
 type tilemap struct {
-	width, height int // in tile
-	tileset *tileset
-	tiles [][]tile
+	Width   int      `json:"width"`  // in tile
+	Height  int      `json:"height"` //in tile
+	Tileset *tileset `json:"tileset"`
+	Tiles   [][]tile `json:"tiles"`
 	// actions (Array<Object> (custom tiles action) [name, color, attributes(json)])
 }
 
 func NewTilemap(width, height int, tileset *tileset) *tilemap {
-	newTilemap := tilemap{width: width, height: height, tileset: tileset}
+	newTilemap := tilemap{Width: width, Height: height, Tileset: tileset}
 	newTilemap.FillEmptyBoard()
 
 	return &newTilemap
 }
 
 func (tm *tilemap) ChangeSize(width, height int) {
-	tm.width = width
-	tm.height = height
-	newBoard := make([][]tile, tm.height)
+	tm.Width = width
+	tm.Height = height
+	newBoard := make([][]tile, tm.Height)
 
-	for y := 0; y < tm.height; y++ {
-		newBoard[y] = make([]tile, tm.width)
+	for y := 0; y < tm.Height; y++ {
+		newBoard[y] = make([]tile, tm.Width)
 
-		for x := 0; x < tm.width; x++ {
-			if y < len(tm.tiles) && x < len(tm.tiles[y]) {
-				newBoard[y][x] = tm.tiles[y][x]
+		for x := 0; x < tm.Width; x++ {
+			if y < len(tm.Tiles) && x < len(tm.Tiles[y]) {
+				newBoard[y][x] = tm.Tiles[y][x]
 			} else {
-				newBoard[y][x] = tile{index: -1}
+				newBoard[y][x] = tile{Index: -1}
 			}
 		}
 	}
 
-	tm.tiles = newBoard
+	tm.Tiles = newBoard
 }
 
 func (tm *tilemap) FillEmptyBoard() {
-	tm.tiles = make([][]tile, tm.height)
-	for y := 0; y < tm.height; y++ {
-		tm.tiles[y] = make([]tile, tm.width)
-		for x := 0; x < tm.width; x++ {
-			tm.tiles[y][x] = tile{index: -1}
+	tm.Tiles = make([][]tile, tm.Height)
+	for y := 0; y < tm.Height; y++ {
+		tm.Tiles[y] = make([]tile, tm.Width)
+		for x := 0; x < tm.Width; x++ {
+			tm.Tiles[y][x] = tile{Index: -1}
 		}
 	}
 }
 
 func (tm tilemap) Draw() {
-	for y := 0; y < tm.height; y++ {
-		for x := 0; x < tm.width; x++ {
-			tm.tiles[y][x].Draw(x * tm.tileset.tileWidth, y * tm.tileset.tileHeight, *tm.tileset)
+	for y := 0; y < tm.Height; y++ {
+		for x := 0; x < tm.Width; x++ {
+			tm.Tiles[y][x].Draw(x * tm.Tileset.TileWidth, y * tm.Tileset.TileHeight, *tm.Tileset)
 		}
 	}
 }
 
 func (tm tilemap) PixelWidth() int {
-	return tm.width * tm.tileset.tileWidth
+	return tm.Width * tm.Tileset.TileWidth
 }
 
 func (tm tilemap) PixelHeight() int {
-	return tm.height * tm.tileset.tileHeight
+	return tm.Height * tm.Tileset.TileHeight
 }

@@ -80,8 +80,8 @@ func (a *app) Start() {
 
 		a.ShowInfo()
 		mouseTilePosInfo := fmt.Sprintf("Mouse tile position: %v - %v", tilemapWidget.GetTileXFromPos(a.mousePosition.X), tilemapWidget.GetTileYFromPos(a.mousePosition.Y))
-		tilesetinfo := fmt.Sprintf("Tileset: %v - %v / %v", tileset.tileWidth, tileset.tileHeight, tileset.imagePath)
-		tilemapinfo := fmt.Sprintf("Tilemap: %v - %v", tilemap.width, tilemap.height)
+		tilesetinfo := fmt.Sprintf("Tileset: %v - %v / %v", tileset.TileWidth, tileset.TileHeight, tileset.ImagePath)
+		tilemapinfo := fmt.Sprintf("Tilemap: %v - %v", tilemap.Width, tilemap.Height)
 
 		r.DrawText(mouseTilePosInfo, 10, 50, 10, r.Black)
 		r.DrawText(tilesetinfo, 10, 70, 10, r.Black)
