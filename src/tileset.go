@@ -11,9 +11,13 @@ type tileset struct {
 
 func NewTileset(tileWidth, tileHeight int, imagePath string) *tileset {
 	newTileset := tileset{TileWidth: tileWidth, TileHeight: tileHeight, ImagePath: imagePath}
-	newTileset.texture = r.LoadTexture(imagePath)
+	newTileset.LoadTexture()
 
 	return &newTileset
+}
+
+func (t *tileset) LoadTexture() {
+	t.texture = r.LoadTexture(t.ImagePath)
 }
 
 func (t *tileset) ChangeImage(imagePath string) {

@@ -1,8 +1,11 @@
 package ttme
 
 import (
+	"encoding/json"
 	"fmt"
 	r "github.com/lachee/raylib-goplus/raylib"
+	"io/ioutil"
+	"os"
 )
 
 type app struct {
@@ -32,15 +35,53 @@ func (a app) ShowInfo() {
 	r.DrawText(mouseStateInfo, 10, 30, 10, r.Black)
 }
 
-// TODO: Handle mouse press when clickable is also scrollable and scrolled
-func (a *app) Start() {
-	tileset := *NewTileset(16, 16, "./assets/tilesetpkm.png")
-	tilesetWidget := NewTilesetWidget(30, 425, 370, 370, &tileset)
-	tilemap := NewTilemap(50, 50, &tileset)
-	tilemapWidget := NewTilemapWidget(420, 95, 800, 700, tilemap)
-	tilsetConfigurationWidget := NewTilesetConfigurationWidget(30, 750, &tileset)
-	tilePropertiesWidget := NewTilePropertiesWidget(25, 200)
-	tilemapConfigurationWidget := NewTilemapConfigurationWidget(80, 100, tilemap)
+func (a app) Init(ts *tileset, tsw *tilesetWidget, tm *tilemap, tmw *tilemapWidget, tscw *tilesetConfigurationWidget, tpw *tilePropertiesWidget, tmcw *tilemapConfigurationWidget) {
+	*ts = *NewTileset(16, 16, "./assets/tilesetpkm.png")
+	*tsw = *NewTilesetWidget(30, 425, 370, 370, ts)
+	*tm = *NewTilemap(50, 50, ts)
+	*tmw = *NewTilemapWidget(420, 95, 800, 700, tm)
+	*tscw = *NewTilesetConfigurationWidget(30, 750, ts)
+	*tpw = *NewTilePropertiesWidget(25, 200)
+	*tmcw = *NewTilemapConfigurationWidget(80, 100, tm)
+}
+
+func (a app) InitFromFile(path string, ts *tileset, tsw *tilesetWidget, tm *tilemap, tmw *tilemapWidget, tscw *tilesetConfigurationWidget, tpw *tilePropertiesWidget, tmcw *tilemapConfigurationWidget) {
+	file, err := os.Open(path)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(-1)
+	}
+	defer file.Close()
+
+	var loadedTm tilemap
+	byteValue, _ := ioutil.ReadAll(file)
+	json.Unmarshal(byteValue, &loadedTm)
+
+	*tm = loadedTm
+	tm.Tileset.LoadTexture()
+	*ts = *tm.Tileset
+	*tsw = *NewTilesetWidget(30, 425, 370, 370, ts)
+	*tmw = *NewTilemapWidget(420, 95, 800, 700, tm)
+	*tscw = *NewTilesetConfigurationWidget(30, 750, ts)
+	*tpw = *NewTilePropertiesWidget(25, 200)
+	*tmcw = *NewTilemapConfigurationWidget(80, 100, tm)
+}
+
+func (a *app) Start(fileToLoad string) {
+	tileset := tileset{}
+	tilesetWidget := tilesetWidget{}
+	tilemap := tilemap{}
+	tilemapWidget := tilemapWidget{}
+	tilsetConfigurationWidget := tilesetConfigurationWidget{}
+	tilePropertiesWidget := tilePropertiesWidget{}
+	tilemapConfigurationWidget := tilemapConfigurationWidget{}
+
+	// TODO: Not really proud of this way to init app state
+	if len(fileToLoad) == 0 {
+		a.Init(&tileset, &tilesetWidget, &tilemap, &tilemapWidget, &tilsetConfigurationWidget, &tilePropertiesWidget, &tilemapConfigurationWidget)
+	} else {
+		a.InitFromFile(fileToLoad, &tileset, &tilesetWidget, &tilemap, &tilemapWidget, &tilsetConfigurationWidget, &tilePropertiesWidget, &tilemapConfigurationWidget)
+	}
 
 	for !r.WindowShouldClose() {
 
@@ -75,8 +116,8 @@ func (a *app) Start() {
 		r.ClearBackground(r.RayWhite)
 		tilemapWidget.Draw()
 		tilesetWidget.Draw()
-		tilsetConfigurationWidget.Draw(tilemapWidget)
-		tilemapConfigurationWidget.Draw(tilemapWidget)
+		tilsetConfigurationWidget.Draw(&tilemapWidget)
+		tilemapConfigurationWidget.Draw(&tilemapWidget)
 
 		a.ShowInfo()
 		mouseTilePosInfo := fmt.Sprintf("Mouse tile position: %v - %v", tilemapWidget.GetTileXFromPos(a.mousePosition.X), tilemapWidget.GetTileYFromPos(a.mousePosition.Y))
