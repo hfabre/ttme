@@ -13,6 +13,7 @@ type app struct {
 	name string
 	mousePressed bool
 	mousePosition r.Vector2
+	rightMousePressed bool
 }
 
 func NewApp(width, height int, name string) *app {
@@ -24,6 +25,7 @@ func NewApp(width, height int, name string) *app {
 		name:          name,
 		mousePressed:  false,
 		mousePosition: r.NewVector2Zero(),
+		rightMousePressed: false,
 	}
 }
 
@@ -102,6 +104,14 @@ func (a *app) Start(fileToLoad string) {
 			a.mousePressed = false
 		}
 
+		if r.IsMouseButtonPressed(r.MouseRightButton) {
+			a.rightMousePressed = true
+		}
+
+		if r.IsMouseButtonReleased(r.MouseRightButton) {
+			a.rightMousePressed = false
+		}
+
 		// Handle tile pasting
 
 		if a.mousePressed && tilemapWidget.Contains(a.mousePosition.X, a.mousePosition.Y) {
@@ -110,6 +120,12 @@ func (a *app) Start(fileToLoad string) {
 			} else {
 				tilemapWidget.SetPropertyFromPos(a.mousePosition.X, a.mousePosition.Y, tilePropertiesWidget.SelectedProperty())
 			}
+		}
+
+		// Handle tile removing
+
+		if a.rightMousePressed && tilemapWidget.Contains(a.mousePosition.X, a.mousePosition.Y) {
+			tilemapWidget.SetTileFromPos(a.mousePosition.X, a.mousePosition.Y, tile{Index: -1})
 		}
 
 		r.BeginDrawing()
