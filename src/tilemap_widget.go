@@ -31,12 +31,12 @@ func (tmw *tilemapWidget) Update() {
 	tmw.targetTexture = r.LoadRenderTexture(tmw.tilemap.PixelWidth(), tmw.tilemap.PixelHeight())
 }
 
-func (tmw *tilemapWidget) Draw() {
+func (tmw *tilemapWidget) Draw(showProperties, showGrid bool) {
 	content := r.Rectangle{X: 0, Y: 0, Width: float32(tmw.tilemap.PixelWidth()), Height: float32(tmw.tilemap.PixelHeight())}
 	tmw.view, tmw.panelScroll = r.GuiScrollPanel(tmw.Bounds(), content, tmw.panelScroll)
 
 	r.BeginTextureMode(tmw.targetTexture)
-	tmw.tilemap.Draw()
+	tmw.tilemap.Draw(showProperties, showGrid)
 	r.EndTextureMode()
 
 	// Note: We have to take back one because scroll offset starts at one

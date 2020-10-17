@@ -34,8 +34,7 @@ func (t *tile) AddProperty(property tileProperty) {
 	}
 }
 
-func (t tile) Draw(x, y int, tileset tileset) {
-
+func (t tile) Draw(x, y int, tileset tileset, showProperties, showGrid bool) {
 	if t.Index == -1 {
 		r.DrawRectangle(x, y, tileset.TileWidth, tileset.TileHeight, r.Black)
 	} else {
@@ -48,31 +47,37 @@ func (t tile) Draw(x, y int, tileset tileset) {
 		subRec := r.Rectangle{X: tileX, Y: tileY, Width: float32(tileset.TileWidth), Height: float32(tileset.TileHeight)}
 		r.DrawTextureRec(tileset.texture, subRec, pos, r.White)
 
-		switch len(t.Properties) {
-		case 0:
-			// Nothing to do
-		case 1:
-			r.DrawRectangle(x, y, tileset.TileWidth, tileset.TileHeight, t.PropertyColor(0))
-		case 2:
-			w := tileset.TileWidth / 2
-			r.DrawRectangle(x, y, w, tileset.TileHeight, t.PropertyColor(0))
-			r.DrawRectangle(x + w, y, w, tileset.TileHeight, t.PropertyColor(1))
-		case 3:
-			w := tileset.TileWidth / 2
-			h := tileset.TileHeight / 2
-			r.DrawRectangle(x, y, w, h, t.PropertyColor(0))
-			r.DrawRectangle(x + w, y, w, h, t.PropertyColor(1))
-			r.DrawRectangle(x, y + h, tileset.TileWidth, h, t.PropertyColor(2))
-		case 4:
-			w := tileset.TileWidth / 2
-			h := tileset.TileHeight / 2
-			r.DrawRectangle(x, y, w, h, t.PropertyColor(0))
-			r.DrawRectangle(x + w, y, w, h, t.PropertyColor(1))
-			r.DrawRectangle(x, y + h, w, h, t.PropertyColor(2))
-			r.DrawRectangle(x + w, y + h, w, h, t.PropertyColor(3))
-		default:
-			// Find a way to handle (or block) more than 4 properties
+		if showProperties {
+			switch len(t.Properties) {
+			case 0:
+				// Nothing to do
+			case 1:
+				r.DrawRectangle(x, y, tileset.TileWidth, tileset.TileHeight, t.PropertyColor(0))
+			case 2:
+				w := tileset.TileWidth / 2
+				r.DrawRectangle(x, y, w, tileset.TileHeight, t.PropertyColor(0))
+				r.DrawRectangle(x + w, y, w, tileset.TileHeight, t.PropertyColor(1))
+			case 3:
+				w := tileset.TileWidth / 2
+				h := tileset.TileHeight / 2
+				r.DrawRectangle(x, y, w, h, t.PropertyColor(0))
+				r.DrawRectangle(x + w, y, w, h, t.PropertyColor(1))
+				r.DrawRectangle(x, y + h, tileset.TileWidth, h, t.PropertyColor(2))
+			case 4:
+				w := tileset.TileWidth / 2
+				h := tileset.TileHeight / 2
+				r.DrawRectangle(x, y, w, h, t.PropertyColor(0))
+				r.DrawRectangle(x + w, y, w, h, t.PropertyColor(1))
+				r.DrawRectangle(x, y + h, w, h, t.PropertyColor(2))
+				r.DrawRectangle(x + w, y + h, w, h, t.PropertyColor(3))
+			default:
+				// Find a way to handle (or block) more than 4 properties
+			}
 		}
+	}
+
+	if showGrid {
+		r.DrawRectangleLines(x, y, tileset.TileWidth, tileset.TileHeight, r.Red)
 	}
 }
 

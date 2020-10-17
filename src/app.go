@@ -37,7 +37,7 @@ func (a app) ShowInfo() {
 	r.DrawText(mouseStateInfo, 10, 30, 10, r.Black)
 }
 
-func (a app) Init(ts *tileset, tsw *tilesetWidget, tm *tilemap, tmw *tilemapWidget, tscw *tilesetConfigurationWidget, tpw *tilePropertiesWidget, tmcw *tilemapConfigurationWidget) {
+func (a app) Init(ts *tileset, tsw *tilesetWidget, tm *tilemap, tmw *tilemapWidget, tscw *tilesetConfigurationWidget, tpw *tilePropertiesWidget, tmcw *tilemapConfigurationWidget, sw *showWidget) {
 	*ts = *NewTileset(16, 16, "./assets/tilesetpkm.png")
 	*tsw = *NewTilesetWidget(30, 425, 370, 370, ts)
 	*tm = *NewTilemap(50, 50, ts)
@@ -45,9 +45,10 @@ func (a app) Init(ts *tileset, tsw *tilesetWidget, tm *tilemap, tmw *tilemapWidg
 	*tscw = *NewTilesetConfigurationWidget(30, 750, ts)
 	*tpw = *NewTilePropertiesWidget(25, 200)
 	*tmcw = *NewTilemapConfigurationWidget(80, 100, tm)
+	*sw = showWidget{x: 500, y: 800, showGrid: false, showProperties: true}
 }
 
-func (a app) InitFromFile(path string, ts *tileset, tsw *tilesetWidget, tm *tilemap, tmw *tilemapWidget, tscw *tilesetConfigurationWidget, tpw *tilePropertiesWidget, tmcw *tilemapConfigurationWidget) {
+func (a app) InitFromFile(path string, ts *tileset, tsw *tilesetWidget, tm *tilemap, tmw *tilemapWidget, tscw *tilesetConfigurationWidget, tpw *tilePropertiesWidget, tmcw *tilemapConfigurationWidget, sw *showWidget) {
 	file, err := os.Open(path)
 	if err != nil {
 		fmt.Println(err)
@@ -67,6 +68,7 @@ func (a app) InitFromFile(path string, ts *tileset, tsw *tilesetWidget, tm *tile
 	*tscw = *NewTilesetConfigurationWidget(30, 750, ts)
 	*tpw = *NewTilePropertiesWidget(25, 200)
 	*tmcw = *NewTilemapConfigurationWidget(80, 100, tm)
+	*sw = showWidget{x: 500, y: 800, showGrid: false, showProperties: true}
 }
 
 func (a *app) Start(fileToLoad string) {
@@ -77,12 +79,13 @@ func (a *app) Start(fileToLoad string) {
 	tilsetConfigurationWidget := tilesetConfigurationWidget{}
 	tilePropertiesWidget := tilePropertiesWidget{}
 	tilemapConfigurationWidget := tilemapConfigurationWidget{}
+	showWidget := showWidget{}
 
 	// TODO: Not really proud of this way to init app state
 	if len(fileToLoad) == 0 {
-		a.Init(&tileset, &tilesetWidget, &tilemap, &tilemapWidget, &tilsetConfigurationWidget, &tilePropertiesWidget, &tilemapConfigurationWidget)
+		a.Init(&tileset, &tilesetWidget, &tilemap, &tilemapWidget, &tilsetConfigurationWidget, &tilePropertiesWidget, &tilemapConfigurationWidget, &showWidget)
 	} else {
-		a.InitFromFile(fileToLoad, &tileset, &tilesetWidget, &tilemap, &tilemapWidget, &tilsetConfigurationWidget, &tilePropertiesWidget, &tilemapConfigurationWidget)
+		a.InitFromFile(fileToLoad, &tileset, &tilesetWidget, &tilemap, &tilemapWidget, &tilsetConfigurationWidget, &tilePropertiesWidget, &tilemapConfigurationWidget, &showWidget)
 	}
 
 	for !r.WindowShouldClose() {
@@ -130,7 +133,8 @@ func (a *app) Start(fileToLoad string) {
 
 		r.BeginDrawing()
 		r.ClearBackground(r.RayWhite)
-		tilemapWidget.Draw()
+		tilemapWidget.Draw(showWidget.showProperties, showWidget.showGrid)
+		showWidget.Draw()
 		tilesetWidget.Draw()
 		tilsetConfigurationWidget.Draw(&tilemapWidget)
 		tilemapConfigurationWidget.Draw(&tilemapWidget)

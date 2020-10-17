@@ -45,10 +45,10 @@ func (tm *tilemap) FillEmptyBoard() {
 	}
 }
 
-func (tm tilemap) Draw() {
+func (tm tilemap) Draw(showProperties, showGrid bool) {
 	for y := 0; y < tm.Height; y++ {
 		for x := 0; x < tm.Width; x++ {
-			tm.Tiles[y][x].Draw(x * tm.Tileset.TileWidth, y * tm.Tileset.TileHeight, *tm.Tileset)
+			tm.Tiles[y][x].Draw(x * tm.Tileset.TileWidth, y * tm.Tileset.TileHeight, *tm.Tileset, showProperties, showGrid)
 		}
 	}
 }
