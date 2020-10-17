@@ -45,7 +45,7 @@ func (a app) Init(ts *tileset, tsw *tilesetWidget, tm *tilemap, tmw *tilemapWidg
 	*tscw = *NewTilesetConfigurationWidget(30, 750, ts)
 	*tpw = *NewTilePropertiesWidget(25, 200)
 	*tmcw = *NewTilemapConfigurationWidget(80, 100, tm)
-	*sw = showWidget{x: 500, y: 800, showGrid: false, showProperties: true}
+	*sw = showWidget{x: 550, y: 800, showGrid: false, showProperties: true}
 }
 
 func (a app) InitFromFile(path string, ts *tileset, tsw *tilesetWidget, tm *tilemap, tmw *tilemapWidget, tscw *tilesetConfigurationWidget, tpw *tilePropertiesWidget, tmcw *tilemapConfigurationWidget, sw *showWidget) {
@@ -68,7 +68,7 @@ func (a app) InitFromFile(path string, ts *tileset, tsw *tilesetWidget, tm *tile
 	*tscw = *NewTilesetConfigurationWidget(30, 750, ts)
 	*tpw = *NewTilePropertiesWidget(25, 200)
 	*tmcw = *NewTilemapConfigurationWidget(80, 100, tm)
-	*sw = showWidget{x: 500, y: 800, showGrid: false, showProperties: true}
+	*sw = showWidget{x: 550, y: 800, showGrid: false, showProperties: true}
 }
 
 func (a *app) Start(fileToLoad string) {
@@ -80,6 +80,7 @@ func (a *app) Start(fileToLoad string) {
 	tilePropertiesWidget := tilePropertiesWidget{}
 	tilemapConfigurationWidget := tilemapConfigurationWidget{}
 	showWidget := showWidget{}
+	mouseInTileMap := false
 
 	// TODO: Not really proud of this way to init app state
 	if len(fileToLoad) == 0 {
@@ -117,7 +118,9 @@ func (a *app) Start(fileToLoad string) {
 
 		// Handle tile pasting
 
-		if a.mousePressed && tilemapWidget.Contains(a.mousePosition.X, a.mousePosition.Y) {
+		mouseInTileMap = tilemapWidget.Contains(a.mousePosition.X, a.mousePosition.Y)
+
+		if a.mousePressed && mouseInTileMap {
 			if tilePropertiesWidget.Selected() {
 				tilemapWidget.SetTileFromPos(a.mousePosition.X, a.mousePosition.Y, tilesetWidget.selectedTile)
 			} else {
@@ -138,16 +141,22 @@ func (a *app) Start(fileToLoad string) {
 		tilesetWidget.Draw()
 		tilsetConfigurationWidget.Draw(&tilemapWidget)
 		tilemapConfigurationWidget.Draw(&tilemapWidget)
-
-		a.ShowInfo()
-		mouseTilePosInfo := fmt.Sprintf("Mouse tile position: %v - %v", tilemapWidget.GetTileXFromPos(a.mousePosition.X), tilemapWidget.GetTileYFromPos(a.mousePosition.Y))
-		tilesetinfo := fmt.Sprintf("Tileset: %v - %v / %v", tileset.TileWidth, tileset.TileHeight, tileset.ImagePath)
-		tilemapinfo := fmt.Sprintf("Tilemap: %v - %v", tilemap.Width, tilemap.Height)
-
-		r.DrawText(mouseTilePosInfo, 10, 50, 10, r.Black)
-		r.DrawText(tilesetinfo, 10, 70, 10, r.Black)
-		r.DrawText(tilemapinfo, 10, 90, 10, r.Black)
 		tilePropertiesWidget.Draw()
+
+		//a.ShowInfo()
+
+		// Debug
+		//tilesetinfo := fmt.Sprintf("Tileset: %v - %v / %v", tileset.TileWidth, tileset.TileHeight, tileset.ImagePath)
+		//tilemapinfo := fmt.Sprintf("Tilemap: %v - %v", tilemap.Width, tilemap.Height)
+
+		if mouseInTileMap {
+			mouseTilePosInfo := fmt.Sprintf("Tile position: %v - %v", tilemapWidget.GetTileXFromPos(a.mousePosition.X), tilemapWidget.GetTileYFromPos(a.mousePosition.Y))
+			r.DrawText(mouseTilePosInfo, 420, 803, 11, r.Black)
+		}
+
+		// Debug
+		//r.DrawText(tilesetinfo, 10, 70, 10, r.Black)
+		//r.DrawText(tilemapinfo, 10, 90, 10, r.Black)
 		r.EndDrawing()
 	}
 	r.CloseWindow()
