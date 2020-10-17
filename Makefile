@@ -9,7 +9,10 @@ build-windows:
 build-darwin:
 	CGO_ENABLED=1 GOARCH=amd64 CC=gcc GOOS=darwin go build -o ./build/ttme-darwin ./main.go
 
-fbuild: build-windows build-darwin
+build-linux:
+	CGO_ENABLED=1 GOARCH=amd64 CC=gcc GOOS=linux go build -o ./build/ttme-linux ./main.go
+
+fbuild: build-windows build-darwin build-linux
 	mkdir -p ./build/assets
 	mkdir -p ./packaged_build
 	cp ./assets/tilesetpkm.png ./build/assets/tilesetpkm.png
