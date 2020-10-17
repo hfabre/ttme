@@ -1,5 +1,5 @@
 Ttme is Tiny Tile Map Editor (think [Tiled](https://www.mapeditor.org/) but with way less features). It is written in [Golang](https://golang.org/)
-using [those bindings](https://github.com/gen2brain/raylib-go) to the awesome [raygui/raylib](https://www.raylib.com/).
+using [those bindings](https://github.com/lachee/raylib-goplus) to the awesome [raygui/raylib](https://www.raylib.com/).
 
 I started this project because I wanted to learn Go and try to build a cross-platform GUI application without using big frameworks.
 
@@ -13,7 +13,7 @@ Run the project
 
 ### Build
 
-Build for Windows and Darwin.
+Build for Windows, Darwin and Linux.
 Bin file are under ./build.
 Zipfile with all builds is under ./packed_build.
 
@@ -27,56 +27,44 @@ Clean build folders
 
 ## Current Feature
 
-- Chose map size
-- Draw map
-- JSON export
-- Use own tileset (tile size has to be specified at map creation)
+- Define map size
+- Use your own tileset (with the tile size you want)
+- Ability to add (custom) properties to your tiles (blocking property exists by default)
+- Export to json
+- Show/Hide grid
+- Show/Hide properties
+- Reload existing map through arguments (`ttme mymap.json`)
 
-![Ttme Demo](assets/ttme-demo.gif)
+## Known bugs or limitations
 
-The exported json file was:
+- Open a File dialog at startup (It's a workaround [this bug](https://github.com/sqweek/dialog/issues/51))
+- Does not support layers (may be added in the future)
+- Does not show well on high DPI screens (at least on my Macbook)
+
+## Demo
+
+![Ttme Demo](assets/demo_ttme.gif)
+
+The exported json file can be found under `assets/example.json`, but here is a template:
 
 ```json
-# Real output is a one liner but I prettyfied it.
 {
-   "Width":10,
-   "Height":10,
-   "Board":[
-      [0,0,0,0,0,0,0,0,0,0],
-      [0,0,0,0,0,0,0,0,0,0],
-      [0,0,0,0,0,0,0,0,0,0],
-      [0,0,0,0,0,0,0,0,0,0],
-      [0,0,0,0,0,0,0,0,0,0],
-      [0,0,0,0,0,10,10,10,10,15],
-      [0,0,0,0,0,10,10,10,10,15],
-      [0,0,13,13,13,10,13,13,10,10],
-      [0,0,13,19,13,19,13,13,13,13],
-      [0,0,13,13,13,13,13,13,13,13]
-   ]
+   "width": Int,
+   "height": Int,
+   "tileset": {
+      "tileWidth": Int,
+      "tileHeight": Int,
+      "imagePath": String
+   },
+   "tiles": [
+    {
+       "index": Int (-1 for empty tiles),
+       "properties": [{"name":  String, "value":  String, "color": {"R": Int,"G": Int,"B": Int,"A": Int}}] (can be null)
+    }
+  ]
 }
 ```
 
 ## Future
 
-Since I don't use this project at the moment, it'll evolve but slowly while I have fun coding it.
-
-### Little feature
-
-- Export to YML
-- Reload existing map
-
-### Big feature
-
-#### Make board viewer scrollable
-
-Be able to scroll on the board viewer woul be awesome to work on big maps
-
-#### Build tileset alongside your map
-
-I would like to let you use multiple images (tile or tileset) and build your tilset at
-the runtime with part of images you use while building your map
-
-#### Build custom tiles
-
-I mean you should be able to not only get the tile position in the tileset but get some useful infomations too
-like knowing if the tile is solid or is an object, ...
+Since I don't use this project at the moment, it will evolve but slowly while I have fun coding it.
