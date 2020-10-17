@@ -1,8 +1,9 @@
-module example.com/ttme
+module ttme
 
 go 1.13
 
 require (
-	github.com/gen2brain/raylib-go v0.0.0-20200122235034-72bb6e01adc8 // indirect
-	github.com/sqweek/dialog v0.0.0-20190728103509-6254ed5b0d3c // indirect
+	github.com/TheTitanrain/w32 v0.0.0-20200114052255-2654d97dbd3d // indirect
+	github.com/lachee/raylib-goplus v0.0.0-20200605081007-7ca39b8afc71
+	github.com/sqweek/dialog v0.0.0-20200911184034-8a3d98e8211d
 )
