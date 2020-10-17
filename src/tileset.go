@@ -7,23 +7,29 @@ type tileset struct {
 	TileHeight int    `json:"tileHeight"` // in pixel
 	ImagePath  string `json:"imagePath"`
 	texture    r.Texture2D
+	loaded, needsRedraw bool
 }
 
 func NewTileset(tileWidth, tileHeight int, imagePath string) *tileset {
 	newTileset := tileset{TileWidth: tileWidth, TileHeight: tileHeight, ImagePath: imagePath}
-	newTileset.LoadTexture()
+
+	if len(newTileset.ImagePath) > 0 {
+		newTileset.LoadTexture()
+	}
 
 	return &newTileset
 }
 
 func (t *tileset) LoadTexture() {
 	t.texture = r.LoadTexture(t.ImagePath)
+	t.loaded = true
 }
 
 func (t *tileset) ChangeImage(imagePath string) {
 	r.UnloadTexture(t.texture)
+	t.loaded = false
 	t.ImagePath = imagePath
-	t.texture = r.LoadTexture(t.ImagePath)
+	t.LoadTexture()
 }
 
 func (t tileset) PixelWidth() int {

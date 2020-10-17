@@ -19,10 +19,14 @@ func NewTilesetWidget(x, y, width, height int, tileset *tileset) *tilesetWidget 
 	newWidget.width = width
 	newWidget.height = height
 	newWidget.panelScroll = r.Vector2{X: 0, Y: 0}
-	newWidget.targetTexture = r.LoadRenderTexture(tileset.PixelWidth(), tileset.PixelHeight())
 	newWidget.selectedTile = tile{Index: -1}
+	newWidget.ResetRenderTexture()
 
 	return &newWidget
+}
+
+func (tsw *tilesetWidget) ResetRenderTexture() {
+	tsw.targetTexture = r.LoadRenderTexture(tsw.tileset.PixelWidth(), tsw.tileset.PixelHeight())
 }
 
 func (tsw *tilesetWidget) SelectTile(x, y float32) {
@@ -40,6 +44,16 @@ func (tsw tilesetWidget) Contains(x, y float32) bool {
 }
 
 func (tsw *tilesetWidget) Draw() {
+	if !tsw.tileset.loaded {
+		return
+	}
+
+	// TODO: I don't like the way i'm handling this
+	if tsw.tileset.needsRedraw {
+		tsw.ResetRenderTexture()
+		tsw.tileset.needsRedraw = false
+	}
+
 	content := r.Rectangle{X: 0, Y: 0, Width: float32(tsw.tileset.PixelWidth()), Height: float32(tsw.tileset.PixelHeight())}
 	tsw.view, tsw.panelScroll = r.GuiScrollPanel(tsw.Bounds(), content, tsw.panelScroll)
 	tileX, tileY := tsw.selectedTile.GetTilsetPosition(*tsw.tileset)

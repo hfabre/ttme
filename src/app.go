@@ -38,7 +38,7 @@ func (a app) ShowInfo() {
 }
 
 func (a app) Init(ts *tileset, tsw *tilesetWidget, tm *tilemap, tmw *tilemapWidget, tscw *tilesetConfigurationWidget, tpw *tilePropertiesWidget, tmcw *tilemapConfigurationWidget, sw *showWidget) {
-	*ts = *NewTileset(16, 16, "./assets/tilesetpkm.png")
+	*ts = *NewTileset(16, 16, "")
 	*tsw = *NewTilesetWidget(30, 425, 370, 370, ts)
 	*tm = *NewTilemap(50, 50, ts)
 	*tmw = *NewTilemapWidget(420, 95, 800, 700, tm)
